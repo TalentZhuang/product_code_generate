@@ -1,5 +1,6 @@
 import os
 import tkinter
+import time
 
 # invalid input message
 highlight_font = "\033[1;31;40m{}\033[0m"
@@ -143,7 +144,7 @@ def main():
         #     scode7(str(choice))
     else:
         print(general_invalid_input_str)
-        staticmethod.sleep(2)
+        time.sleep(2)
 
 
 if __name__ == "__main__":
