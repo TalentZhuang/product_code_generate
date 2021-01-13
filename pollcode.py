@@ -1,14 +1,21 @@
 import os
+import tkinter.messagebox
 import tkinter
 import time
+import random
 
+root = tkinter.Tk()
 # invalid input message
 highlight_font = "\033[1;31;40m{}\033[0m"
 general_invalid_input_str = "\033[1;31;40mInvalid input, please input again!! \033[0m"
 over_len_limit_invalid_input_str = "\033[1;31;40mInput must be {}, please input again!! \033[0m"
 zero_input_invalid_input_str = "\033[1;31;40mInput should not be '0', please input again!! \033[0m"
-select_menu_str = "please select menu"
-
+select_menu_str = "please select menu: "
+# scode1 message
+random_sec_code_num_str = highlight_font.format("Please input secrity code number: ")
+# variables
+number = "1234567890"
+randstr = []
 
 def mkdir(path):
     if not os.path.exists(path):
@@ -16,7 +23,7 @@ def mkdir(path):
 
 
 def openfile(file_path):
-    with open(file_path,mode='r') as f:
+    with open(file_path, mode='r') as f:
         filelist = f.read()
     return filelist
 
@@ -36,8 +43,11 @@ def inputbox(showstr, showorder, length):
                 if instr == "0":
                     print(zero_input_invalid_input_str)
                     return "0"
+                else:
+                    return instr
             else:
-                return instr
+                print(general_invalid_input_str)
+                return "0"
         if showorder == 2:
             if str.isalpha(instr):
                 if len(instr) != length:
@@ -72,7 +82,7 @@ def wfile(sstr, sfile, typeis, smsg, datapath):
     :param smsg: message box message
     :param datapath: output file path
 
-    example: wfile(randstr, "scode1.txt", ", "generated 6 digit security code: ", "codepath")
+    example: wfile(randstr, "scode1.txt", "", "generated 6 digit security code: ", "codepath")
     """
     mkdir(datapath)
     datafile = os.path.join(datapath, sfile)
@@ -86,7 +96,7 @@ def wfile(sstr, sfile, typeis, smsg, datapath):
     print(highlight_font.format(pdata))
     if typeis != 'no':
         tkinter.messagebox.showinfo("Tip", smsg + str(len(sstr)) + "\n security file path")
-        tkinter.root.withdraw()
+        root.withdraw()
 
 
 def mainmenu():
@@ -119,7 +129,18 @@ def input_validation(insel):
 
 
 def scode1(str_choice):
-    print("scode1" + str_choice)
+    incount = inputbox(random_sec_code_num_str, 1, 0)
+    while int(incount) == 0:
+        incount = inputbox(random_sec_code_num_str, 1, 0)
+    randstr.clear()
+    for i in range(int(incount)):
+        randfir = ''
+        for j in range(6):
+            randfir = randfir + random.choice(number)
+        randfir += "\n"
+        randstr.append(randfir)
+    wfile(randstr, "scode" + str(str_choice) + ".txt", "", "already generate 6 digit security codes: ", "codepath")
+
 
 def main():
     mainmenu()
